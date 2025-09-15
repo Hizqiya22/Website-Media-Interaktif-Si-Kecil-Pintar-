@@ -108,8 +108,8 @@
   <script>
     const doaListData = [
       { judul: "Doa Sebelum Makan", arab:"اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ", latin:"Allāhumma bārik lanā fīmā razaqtanā waqinā ‘adzāban-nār", arti:"Ya Allah, berkahilah rezeki yang Engkau berikan kepada kami dan lindungilah kami dari siksa neraka" },
-      { judul: "Doa Syukur", arab:"الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ", latin:"Alhamdulillāhil-ladzī ath‘amanā wa saqānā wa ja‘alanā muslimīn", arti:"Segala puji bagi Allah yang telah memberi kami makan, minum, dan menjadikan kami seorang muslim" },
-      { judul: "Doa Shalat", arab:"اللَّهُمَّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي", latin:"Allāhummaj‘alnī muqīmaṣ-ṣalāti wa min dhurriyyatī", arti:"Ya Allah, jadikanlah aku orang yang tetap mendirikan shalat, demikian juga keturunanku" },
+      { judul: "Doa Sesudah Makan", arab:"الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ", latin:"Alhamdulillāhil-ladzī ath‘amanā wa saqānā wa ja‘alanā muslimīn", arti:"Segala puji bagi Allah yang telah memberi kami makan, minum, dan menjadikan kami seorang muslim" },
+      { judul: "Doa Masuk Rumah", arab:"اَلسَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللهِ الصَّالِحِينَ", latin:"Assalāmu ‘alainā wa ‘alā ‘ibādillāhiṣ-ṣāliḥīn", arti:"Semoga keselamatan tercurah atas kami dan atas hamba-hamba Allah yang saleh." },
       { judul: "Doa Mohon Ampunan", arab:"رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ", latin:"Rabbi-ghfir lī wa liwālidayya", arti:"Ya Tuhanku, ampunilah aku dan kedua orang tuaku" },
       { judul: "Doa Minta Ilmu", arab:"اللَّهُمَّ زِدْنِي عِلْمًا", latin:"Allāhumma zidnī ‘ilman", arti:"Ya Allah, tambahkanlah ilmu kepadaku" },
       { judul: "Doa Kemudahan", arab:"رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي", latin:"Rabbi-shraḥ lī ṣadrī wa yassir lī amrī", arti:"Ya Tuhanku, lapangkanlah dadaku dan mudahkanlah urusanku" },
@@ -126,6 +126,7 @@
 
     const doaListContainer = document.getElementById('doaList');
     const audioPlayer = document.getElementById('audioPlayer');
+    let currentDoa = null; // untuk simpan doa yang sedang dimainkan
 
     doaListData.forEach((doa, idx) => {
       const index = idx + 1;
@@ -148,11 +149,18 @@
 
     function playDoa(n) {
       const filePath = `doa${n}.mp3`;
-      document.querySelectorAll(`[id^="status-"]`).forEach(el => el.textContent = "");
       const statusEl = document.getElementById(`status-${n}`);
-      statusEl.textContent = "Memuat…";
+      document.querySelectorAll(`[id^="status-"]`).forEach(el => el.textContent = "");
 
-      audioPlayer.pause();
+      // jika doa yang sama dipause, lanjutkan
+      if (currentDoa === n && audioPlayer.paused && audioPlayer.src.includes(filePath)) {
+        audioPlayer.play();
+        statusEl.textContent = "Sedang diputar";
+        return;
+      }
+
+      // kalau doa beda atau baru dipilih
+      currentDoa = n;
       audioPlayer.src = filePath;
       audioPlayer.load();
       audioPlayer.play().then(() => {
@@ -176,6 +184,7 @@
     function stopAudio() {
       audioPlayer.pause();
       audioPlayer.currentTime = 0;
+      currentDoa = null;
       document.querySelectorAll(`[id^="status-"]`).forEach(el => {
         if (el.textContent === "Sedang diputar" || el.textContent === "Dijeda") el.textContent = "";
       });
@@ -192,6 +201,7 @@
     });
 
     audioPlayer.addEventListener('ended', () => {
+      currentDoa = null;
       document.querySelectorAll(`[id^="status-"]`).forEach(el => {
         if (el.textContent === "Sedang diputar") el.textContent = "";
       });
