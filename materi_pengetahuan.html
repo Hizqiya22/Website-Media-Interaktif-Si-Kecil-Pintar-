@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Materi Pengetahuan Umum - Si Kecil Pintar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom right, #fff3e0, #ffe0b2);
+      text-align: center;
+    }
+
+    header {
+      padding: 20px;
+      background: #ff9800;
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+
+    .content {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+      text-align: left;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    h2 {
+      color: #e65100;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: #ffffffcc;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+
+    .letters, .body-parts, .colors {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .letter-card, .body-card, .color-card {
+      width: 100px;
+      background: #fff8e1;
+      border-radius: 15px;
+      padding: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .letter-emoji, .body-emoji, .color-box {
+      font-size: 36px;
+      margin: 5px 0;
+    }
+
+    .color-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      margin: auto;
+      border: 2px solid #ccc;
+    }
+
+    .btn-back {
+      background: linear-gradient(135deg, #42a5f5, #1e88e5);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 18px;
+      border-radius: 15px;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .btn-back:hover {
+      background: linear-gradient(135deg, #64b5f6, #1565c0);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <header>🌍 Materi Pengetahuan Umum</header>
+
+  <div class="content">
+    <!-- Huruf A-Z -->
+    <div class="card">
+      <h2>🔤 Mengenal Huruf Abjad</h2>
+      <p>Setiap huruf akan diperkenalkan dengan gambar atau benda yang sesuai.</p>
+      <div class="letters" id="lettersContainer"></div>
+      <div id="videoListLetters"></div>
+    </div>
+
+    <!-- Anggota Tubuh -->
+    <div class="card">
+      <h2>🧍‍♂️ Mengenal Anggota Tubuh</h2>
+      <p>Belajar mengenal bagian-bagian tubuh manusia.</p>
+      <div class="body-parts" id="bodyPartsContainer"></div>
+      <div id="videoListBody"></div>
+    </div>
+
+    <!-- Warna -->
+    <div class="card">
+      <h2>🎨 Mengenal Warna-Warna</h2>
+      <p>Belajar warna dengan contoh visual yang menarik.</p>
+      <div class="colors" id="colorsContainer"></div>
+      <div id="videoListColors"></div>
+    </div>
+  </div>
+<!-- Script Huruf -->
+<script>
+  const alphabet = [
+    {letter: "A", name: "Apel", emoji: "🍎"},
+    {letter: "B", name: "Bola", emoji: "⚽"},
+    {letter: "C", name: "Ceri", emoji: "🍒"},
+    {letter: "D", name: "Domba", emoji: "🐑"},
+    {letter: "E", name: "Elang", emoji: "🦅"},
+    {letter: "F", name: "Fanta", emoji: "🥤"},
+    {letter: "G", name: "Gitar", emoji: "🎸"},
+    {letter: "H", name: "Harimau", emoji: "🐅"},
+    {letter: "I", name: "Ikan", emoji: "🐟"},
+    {letter: "J", name: "Jagung", emoji: "🌽"},
+    {letter: "K", name: "Kucing", emoji: "🐱"},
+    {letter: "L", name: "Lembu", emoji: "🐄"},
+    {letter: "M", name: "Mangga", emoji: "🥭"},
+    {letter: "N", name: "Nanas", emoji: "🍍"},
+    {letter: "O", name: "Obor", emoji: "🔥"},
+    {letter: "P", name: "Pisang", emoji: "🍌"},
+    {letter: "Q", name: "Quran", emoji: "📖"},
+    {letter: "R", name: "Roti", emoji: "🍞"},
+    {letter: "S", name: "Semangka", emoji: "🍉"},
+    {letter: "T", name: "Televisi", emoji: "📺"},
+    {letter: "U", name: "Ular", emoji: "🐍"},
+    {letter: "V", name: "Vas", emoji: "🏺"},
+    {letter: "W", name: "Wayang", emoji: "🎭"},
+    {letter: "X", name: "Xilofon", emoji: "🎶"},
+    {letter: "Y", name: "Yoyo", emoji: "🪀"},
+    {letter: "Z", name: "Zebra", emoji: "🦓"}
+  ];
+
+  const container = document.getElementById("lettersContainer");
+  alphabet.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "letter-card";
+    div.innerHTML = `<div class="letter-emoji">${item.emoji}</div><div>${item.letter}</div><div>${item.name}</div>`;
+    container.appendChild(div);
+  });
+
+  // Video huruf per 4 (A-D, E-H, dst)
+  const videoLetters = [
+    {title: "Video: Mengenal Huruf A-Z", file: "mengenalhurufabcd.mp4"},
+  ];
+
+  const videoListLetters = document.getElementById("videoListLetters");
+  videoLetters.forEach(item => {
+    videoListLetters.innerHTML += `
+      <div class="card">
+        <h3>${item.title}</h3>
+        <video controls class="w-100 mt-2 rounded" height="300">
+          <source src="${item.file}" type="video/mp4">
+          Browser kamu tidak mendukung pemutar video.
+        </video>
+      </div>`;
+  });
+</script>
+
+
+  <!-- Script Anggota Tubuh + Video -->
+  <script>
+    const bodyParts = [
+      {name: "Kepala", emoji: "🙂"},
+      {name: "Mata", emoji: "👀"},
+      {name: "Telinga", emoji: "👂"},
+      {name: "Mulut", emoji: "👄"},
+      {name: "Tangan", emoji: "✋"},
+      {name: "Kaki", emoji: "🦵"},
+      {name: "Hidung", emoji: "👃"},
+      {name: "Rambut", emoji: "💇‍♂️"}
+    ];
+
+    const bodyContainer = document.getElementById("bodyPartsContainer");
+    bodyParts.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "body-card";
+      div.innerHTML = `<div class="body-emoji">${item.emoji}</div><div>${item.name}</div>`;
+      bodyContainer.appendChild(div);
+    });
+
+    // Video anggota tubuh
+    const videoBody = [
+      {title: "Video: Anggota Tubuh", file: "anggotatubuh.mp4"},
+      {title: "Video: Kegunaan Anggota Tubuh", file: "kegunaantubuh.mp4"}
+    ];
+
+    const videoListBody = document.getElementById("videoListBody");
+    videoBody.forEach(item => {
+      videoListBody.innerHTML += `
+        <div class="card">
+          <h3>${item.title}</h3>
+          <video controls class="w-100 mt-2 rounded" height="300">
+            <source src="${item.file}" type="video/mp4">
+            Browser kamu tidak mendukung pemutar video.
+          </video>
+        </div>`;
+    });
+  </script>
+
+  <!-- Script Warna + Video -->
+  <script>
+    const colors = [
+      {name: "Merah", hex: "#f44336"},
+      {name: "Biru", hex: "#2196f3"},
+      {name: "Hijau", hex: "#4caf50"},
+      {name: "Kuning", hex: "#ffeb3b"},
+      {name: "Ungu", hex: "#9c27b0"},
+      {name: "Oranye", hex: "#ff9800"},
+      {name: "Hitam", hex: "#000000"},
+      {name: "Putih", hex: "#ffffff"}
+    ];
+
+    const colorsContainer = document.getElementById("colorsContainer");
+    colors.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "color-card";
+      div.innerHTML = `<div class="color-box" style="background:${item.hex};"></div><div>${item.name}</div>`;
+      colorsContainer.appendChild(div);
+    });
+
+    // Video warna
+    const videoColors = [
+      {title: "Video: Warna-Warna", file: "warna.mp4"}
+    ];
+
+    const videoListColors = document.getElementById("videoListColors");
+    videoColors.forEach(item => {
+      videoListColors.innerHTML += `
+        <div class="card">
+          <h3>${item.title}</h3>
+          <video controls class="w-100 mt-2 rounded" height="300">
+            <source src="${item.file}" type="video/mp4">
+            Browser kamu tidak mendukung pemutar video.
+          </video>
+        </div>`;
+    });
+  </script>
+
+  <button class="btn-back" onclick="playClick(); window.location.href='materi.html'">⬅ Kembali ke Materi</button>
+
+  <!-- Suara klik -->
+  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+
+  <script>
+    function playClick() {
+      const sound = document.getElementById("clickSound");
+      sound.currentTime = 0;
+      sound.play();
+    }
+  </script>
+</body>
+</html>

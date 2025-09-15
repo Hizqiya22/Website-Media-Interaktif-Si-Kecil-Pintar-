@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Do'a Harian - Si Kecil Pintar (Audio doa1..doa15)</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom right,#e3f2fd,#bbdefb);
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #42a5f5;
+      color: #fff;
+      padding: 18px;
+      text-align: center;
+      font-size: 24px;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 18px auto;
+      padding: 16px;
+    }
+    .doa {
+      background: #ffffffdd;
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+    .arab {
+      font-size: 20px;
+      text-align: right;
+      color: #2c3e50;
+      margin: 6px 0;
+    }
+    .latin {
+      font-size: 15px;
+      color: #555;
+      margin: 6px 0;
+    }
+    .arti {
+      font-size: 14px;
+      color: #333;
+      font-style: italic;
+      margin: 6px 0;
+    }
+    .btn-audio {
+      background: #42a5f5;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 10px;
+      margin-right: 6px;
+      cursor: pointer;
+    }
+    .btn-audio:hover {
+      background: #1e88e5;
+    }
+    .controls {
+      margin-top: 8px;
+    }
+    .page-info {
+      margin-top: 8px;
+      color: #01579b;
+      font-weight: bold;
+    }
+    .note {
+      font-size: 13px;
+      color: #444;
+      margin-top: 8px;
+    }
+    .error {
+      color: #b71c1c;
+      font-weight: bold;
+    }
+    .btn-back {
+      display: inline-block;
+      margin: 14px auto;
+      padding: 10px 18px;
+      background: linear-gradient(135deg,#ff7043,#d84315);
+      color: white;
+      border-radius: 12px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>🙏 Do'a Harian</header>
+
+  <div class="container" id="main">
+    <p class="note">
+      Tekan <strong>Dengarkan</strong> untuk memutar audio 
+    </p>
+
+    <div id="doaList"></div>
+    <div class="page-info" id="pageInfo"></div>
+
+    <a class="btn-back" href="menu.html">⬅ Kembali ke Menu</a>
+  </div>
+
+  <audio id="audioPlayer" controls style="width:100%;max-width:900px;display:block;margin:12px auto 24px auto"></audio>
+
+  <script>
+    const doaListData = [
+      { judul: "Doa Sebelum Makan", arab:"اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ", latin:"Allāhumma bārik lanā fīmā razaqtanā waqinā ‘adzāban-nār", arti:"Ya Allah, berkahilah rezeki yang Engkau berikan kepada kami dan lindungilah kami dari siksa neraka" },
+      { judul: "Doa Syukur", arab:"الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ", latin:"Alhamdulillāhil-ladzī ath‘amanā wa saqānā wa ja‘alanā muslimīn", arti:"Segala puji bagi Allah yang telah memberi kami makan, minum, dan menjadikan kami seorang muslim" },
+      { judul: "Doa Shalat", arab:"اللَّهُمَّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي", latin:"Allāhummaj‘alnī muqīmaṣ-ṣalāti wa min dhurriyyatī", arti:"Ya Allah, jadikanlah aku orang yang tetap mendirikan shalat, demikian juga keturunanku" },
+      { judul: "Doa Mohon Ampunan", arab:"رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ", latin:"Rabbi-ghfir lī wa liwālidayya", arti:"Ya Tuhanku, ampunilah aku dan kedua orang tuaku" },
+      { judul: "Doa Minta Ilmu", arab:"اللَّهُمَّ زِدْنِي عِلْمًا", latin:"Allāhumma zidnī ‘ilman", arti:"Ya Allah, tambahkanlah ilmu kepadaku" },
+      { judul: "Doa Kemudahan", arab:"رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي", latin:"Rabbi-shraḥ lī ṣadrī wa yassir lī amrī", arti:"Ya Tuhanku, lapangkanlah dadaku dan mudahkanlah urusanku" },
+      { judul: "Doa Memohon Hikmah", arab:"رَبِّ هَبْ لِي حُكْمًا وَأَلْحِقْنِي بِالصَّالِحِينَ", latin:"Rabbi hab lī ḥukman wa alḥiqnī biṣ-ṣāliḥīn", arti:"Ya Tuhanku, berikanlah kepadaku hikmah dan masukkanlah aku ke dalam golongan orang yang saleh" },
+      { judul: "Doa Lindungi Nikmat", arab:"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ زَوَالِ نِعْمَتِكَ", latin:"Allāhumma innī a‘ūdzu bika min zawāli ni‘matika", arti:"Ya Allah, aku berlindung kepada-Mu dari hilangnya nikmat-Mu" },
+      { judul: "Doa Taubat", arab:"اللَّهُمَّ اجْعَلْنَا مِنَ التَّوَّابِينَ وَاجْعَلْنَا مِنَ الْمُتَطَهِّرِينَ", latin:"Allāhummaj‘alnā minat-tawwābīn waj‘alnā minal-mutaṭahhirīn", arti:"Ya Allah, jadikanlah kami termasuk orang yang bertaubat dan orang-orang yang mensucikan diri" },
+      { judul: "Doa Kesembuhan", arab:"اللَّهُمَّ اشْفِ مَرْضَانَا وَمَرْضَى الْمُسْلِمِينَ", latin:"Allāhumma-shfi marḍānā wa marḍal-muslimīn", arti:"Ya Allah, sembuhkanlah orang-orang sakit di antara kami dan orang sakit kaum muslimin" },
+      { judul: "Doa Ampunan & Rumah Lapang", arab:"اللَّهُمَّ اغْفِرْ لِي ذَنْبِي وَوَسِّعْ لِي فِي دَارِي", latin:"Allāhumma-ghfir lī dzanbī wa wassi‘ lī fī dārī", arti:"Ya Allah, ampunilah dosaku dan lapangkanlah rumahku" },
+      { judul: "Doa Agar Akhir Baik", arab:"اللَّهُمَّ أَحْسِنْ عَاقِبَتَنَا فِي الْأُمُورِ كُلِّهَا", latin:"Allāhumma aḥsin ‘āqibatanā fil-umūri kullihā", arti:"Ya Allah, perbaikilah akibat dari segala urusan kami" },
+      { judul: "Doa Terhindar Fitnah Kubur", arab:"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ فِتْنَةِ الْقَبْرِ", latin:"Allāhumma innī a‘ūdzu bika min fitnatil-qabr", arti:"Ya Allah, aku berlindung kepada-Mu dari fitnah kubur" },
+      { judul: "Doa Menjauhi Bakhil", arab:"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ الْبُخْلِ", latin:"Allāhumma innī a‘ūdzu bika minal-bukhl", arti:"Ya Allah, aku berlindung kepada-Mu dari sifat kikir" },
+      { judul: "Doa Hilangkan Kesedihan", arab:"اللَّهُمَّ فَرِّجْ هَمِّي وَاكْشِفْ غَمِّي", latin:"Allāhumma farrij hammī wakshif ghammi", arti:"Ya Allah, hilangkanlah kesusahanku dan angkatlah kesedihanku" }
+    ];
+
+    const doaListContainer = document.getElementById('doaList');
+    const audioPlayer = document.getElementById('audioPlayer');
+
+    doaListData.forEach((doa, idx) => {
+      const index = idx + 1;
+      const div = document.createElement('div');
+      div.className = 'doa';
+      div.innerHTML = `
+        <h3>${index}. ${doa.judul}</h3>
+        <p class="arab">${doa.arab}</p>
+        <p class="latin">${doa.latin}</p>
+        <p class="arti">Artinya: ${doa.arti}</p>
+        <div class="controls">
+          <button class="btn-audio" onclick="playDoa(${index})">🔊 Dengarkan (doa${index}.mp3)</button>
+          <button class="btn-audio" onclick="pauseAudio()">⏸ Pause</button>
+          <button class="btn-audio" onclick="stopAudio()">⏹ Stop</button>
+          <span id="status-${index}" style="margin-left:8px;"></span>
+        </div>
+      `;
+      doaListContainer.appendChild(div);
+    });
+
+    function playDoa(n) {
+      const filePath = `doa${n}.mp3`;
+      document.querySelectorAll(`[id^="status-"]`).forEach(el => el.textContent = "");
+      const statusEl = document.getElementById(`status-${n}`);
+      statusEl.textContent = "Memuat…";
+
+      audioPlayer.pause();
+      audioPlayer.src = filePath;
+      audioPlayer.load();
+      audioPlayer.play().then(() => {
+        statusEl.textContent = "Sedang diputar";
+      }).catch(err => {
+        if (err.name === 'NotAllowedError') {
+          statusEl.textContent = "Putar diblokir (klik untuk izinkan)";
+        } else {
+          statusEl.textContent = "Gagal memutar — periksa file audio.";
+        }
+      });
+    }
+
+    function pauseAudio() {
+      audioPlayer.pause();
+      document.querySelectorAll(`[id^="status-"]`).forEach(el => {
+        if (el.textContent === "Sedang diputar") el.textContent = "Dijeda";
+      });
+    }
+
+    function stopAudio() {
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      document.querySelectorAll(`[id^="status-"]`).forEach(el => {
+        if (el.textContent === "Sedang diputar" || el.textContent === "Dijeda") el.textContent = "";
+      });
+    }
+
+    audioPlayer.addEventListener('error', () => {
+      const src = audioPlayer.src || '';
+      const match = src.match(/doa(\d+)\.mp3$/i);
+      if (match) {
+        const i = match[1];
+        const statusEl = document.getElementById(`status-${i}`);
+        if (statusEl) statusEl.innerHTML = `<span class="error">File audio tidak ditemukan: doa${i}.mp3</span>`;
+      }
+    });
+
+    audioPlayer.addEventListener('ended', () => {
+      document.querySelectorAll(`[id^="status-"]`).forEach(el => {
+        if (el.textContent === "Sedang diputar") el.textContent = "";
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html> 
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Materi Perhitungan - Si Kecil Pintar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom right, #e1f5fe, #b3e5fc);
+      text-align: center;
+    }
+
+    header {
+      padding: 20px;
+      background: #0288d1;
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+
+    .content {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+      text-align: left;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    h2 {
+      color: #01579b;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: #ffffffcc;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+
+    .example {
+      background: #e1f5fe;
+      padding: 10px;
+      border-radius: 10px;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+
+    .btn-back {
+      background: linear-gradient(135deg, #42a5f5, #1e88e5);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 18px;
+      border-radius: 15px;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .btn-back:hover {
+      background: linear-gradient(135deg, #64b5f6, #1565c0);
+      transform: scale(1.05);
+    }
+
+    .fruits {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin: 8px 0;
+      font-size: 32px;
+    }
+  </style>
+</head>
+<body>
+  <header>🧮 Materi Perhitungan</header>
+
+<div class="content">
+  <!-- 🍎 Angka dengan buah -->
+  <div class="card">
+    <h2>🍎 Mengenal Angka 1-10 dengan Buah</h2>
+    <p>Setiap angka ditunjukkan dengan buah sesuai jumlahnya.</p>
+
+    <div class="example"><p>Angka 1:</p><div class="fruits" id="number1"></div></div>
+    <div class="example"><p>Angka 2:</p><div class="fruits" id="number2"></div></div>
+    <div class="example"><p>Angka 3:</p><div class="fruits" id="number3"></div></div>
+    <div class="example"><p>Angka 4:</p><div class="fruits" id="number4"></div></div>
+    <div class="example"><p>Angka 5:</p><div class="fruits" id="number5"></div></div>
+    <div class="example"><p>Angka 6:</p><div class="fruits" id="number6"></div></div>
+    <div class="example"><p>Angka 7:</p><div class="fruits" id="number7"></div></div>
+    <div class="example"><p>Angka 8:</p><div class="fruits" id="number8"></div></div>
+    <div class="example"><p>Angka 9:</p><div class="fruits" id="number9"></div></div>
+    <div class="example"><p>Angka 10:</p><div class="fruits" id="number10"></div></div>
+  </div>
+
+  <!-- 🔢 Angka 1-10 Bahasa Arab -->
+  <div class="card">
+    <h2>🔢 Mengenal Angka 1-10 dalam Bahasa Arab</h2>
+    <div class="example" id="arabicNumbers"></div>
+    <div id="videoList"></div>
+  </div>
+</div>
+
+<script>
+  // Buah sesuai angka
+  function createFruits(number, elementId, fruit="🍎") {
+    const container = document.getElementById(elementId);
+    container.innerHTML = "";
+    for(let i=0; i<number; i++){
+      const span = document.createElement("span");
+      span.textContent = fruit;
+      container.appendChild(span);
+    }
+  }
+
+  createFruits(1, "number1", "🍎");
+  createFruits(2, "number2", "🍌");
+  createFruits(3, "number3", "🍇");
+  createFruits(4, "number4", "🍓");
+  createFruits(5, "number5", "🍒");
+  createFruits(6, "number6", "🍉");
+  createFruits(7, "number7", "🍍");
+  createFruits(8, "number8", "🥭");
+  createFruits(9, "number9", "🥝");
+  createFruits(10, "number10", "🍑");
+
+  // Angka Arab
+  const arabicNumbers = [
+    "١ - Wahid (1)", "٢ - Itsnān (2)", "٣ - Tsalāthah (3)", 
+    "٤ - Arba‘ah (4)", "٥ - Khamsah (5)", "٦ - Sittah (6)", 
+    "٧ - Sab‘ah (7)", "٨ - Tsamāniyah (8)", "٩ - Tis‘ah (9)", 
+    "١٠ - ‘Asharah (10)"
+  ];
+
+  const arabicContainer = document.getElementById("arabicNumbers");
+  arabicNumbers.forEach(num => {
+    const p = document.createElement("p");
+    p.textContent = num;
+    arabicContainer.appendChild(p);
+  });
+
+  // Video materi
+  const iceBreakingList = [
+    {
+      title: "Mengenal Angka 1-10 Bahasa Arab",
+      type: "video",
+      file: "1-10arab.mp4"
+    }
+  ];
+
+  const videoListDiv = document.getElementById("videoList");
+
+  iceBreakingList.forEach(item => {
+    let mediaTag = "";
+    if (item.type === "audio") {
+      mediaTag = `<audio controls class="w-100 mt-2">
+                    <source src="${item.file}" type="audio/mp4">
+                    Browser kamu tidak mendukung pemutar audio.
+                  </audio>`;
+    } else {
+      mediaTag = `<video controls class="w-100 mt-2 rounded" height="220">
+                    <source src="${item.file}" type="video/mp4">
+                    Browser kamu tidak mendukung pemutar video.
+                  </video>`;
+    }
+
+    videoListDiv.innerHTML += `
+      <div class="card shadow-sm">
+        <h5 class="card-title text-primary">${item.title}</h5>
+        ${mediaTag}
+      </div>`;
+  });
+</script>
+
+<button class="btn-back" onclick="playClick(); window.location.href='materi.html'">⬅ Kembali ke Materi</button>
+
+<!-- Suara klik -->
+<audio id="clickSound" src="click.mp3" preload="auto"></audio>
+
+<script>
+  function playClick() {
+    const sound = document.getElementById("clickSound");
+    sound.currentTime = 0;
+    sound.play();
+  }
+</script>
+</body>
+</html>

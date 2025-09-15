@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Edukasi - Si Kecil Pintar</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #fce4ec, #e1f5fe);
+      text-align: center;
+    }
+    header {
+      background: #0288d1;
+      color: white;
+      padding: 20px;
+      font-size: 26px;
+      font-weight: bold;
+    }
+    .quiz-container {
+      max-width: 700px;
+      margin: 30px auto;
+      background: #ffffffdd;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    .question {
+      font-size: 22px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: #01579b;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .options button {
+      padding: 12px;
+      font-size: 18px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      background: #42a5f5;
+      color: white;
+      transition: 0.3s;
+    }
+    .options button:hover {
+      background: #1e88e5;
+      transform: scale(1.05);
+    }
+    .score {
+      font-size: 20px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .btn-back {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #42a5f5, #1e88e5);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 18px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-back:hover {
+      background: linear-gradient(135deg, #64b5f6, #1565c0);
+    }
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <header>🧩 Quiz Edukasi Interaktif</header>
+  
+  <div class="quiz-container">
+    <div id="quiz">
+      <div class="question" id="question"></div>
+      <div class="options" id="options"></div>
+      <div class="score" id="score"></div>
+    </div>
+  </div>
+
+  <button class="btn-back" onclick="window.location.href='menu.html'">⬅ Kembali ke Menu</button>
+
+  <!-- Canvas untuk confetti -->
+  <canvas id="confetti"></canvas>
+
+  <script>
+    const quizData = [
+      { q: "🍎 = angka berapa?", options: ["1", "2", "3", "4"], answer: "1" },
+      { q: "🍌🍌🍌 = angka berapa?", options: ["2", "3", "5", "4"], answer: "3" },
+      { q: "٥ = angka berapa?", options: ["4", "5", "6", "7"], answer: "5" },
+      { q: "٨ = angka berapa?", options: ["9", "8", "7", "6"], answer: "8" },
+      { q: "Rukun Islam ada berapa?", options: ["5", "6", "7", "4"], answer: "5" },
+      { q: "Rukun Iman ada berapa?", options: ["5", "6", "7", "8"], answer: "6" },
+      { q: "Huruf pertama dalam abjad?", options: ["A", "B", "C", "D"], answer: "A" },
+      { q: "Huruf setelah D adalah?", options: ["C", "F", "E", "G"], answer: "E" },
+      { q: "Bagian tubuh untuk melihat?", options: ["Telinga", "Mata", "Hidung", "Mulut"], answer: "Mata" },
+      { q: "Bagian tubuh untuk mendengar?", options: ["Tangan", "Kaki", "Telinga", "Mata"], answer: "Telinga" }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function loadQuiz() {
+      if (current < quizData.length) {
+        document.getElementById("question").textContent = quizData[current].q;
+        const optsDiv = document.getElementById("options");
+        optsDiv.innerHTML = "";
+        quizData[current].options.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+          btn.onclick = () => checkAnswer(opt);
+          optsDiv.appendChild(btn);
+        });
+        document.getElementById("score").textContent = "";
+      } else {
+        document.getElementById("quiz").innerHTML = `
+          <h2>🎉 Quiz selesai!</h2>
+          <p>Nilai kamu: ${score} / ${quizData.length * 10}</p>
+        `;
+      }
+    }
+
+    function checkAnswer(selected) {
+      if (selected === quizData[current].answer) {
+        score += 10;
+        document.getElementById("score").textContent = "✅ Jawaban Benar! +10";
+        startConfetti();
+        setTimeout(stopConfetti, 1500);
+      } else {
+        document.getElementById("score").textContent = "❌ Salah! Jawaban: " + quizData[current].answer;
+      }
+      current++;
+      setTimeout(loadQuiz, 1500);
+    }
+
+    loadQuiz();
+
+    // 🎉 Efek confetti
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confettiPieces = [];
+    function ConfettiPiece() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height - canvas.height;
+      this.size = Math.random() * 8 + 2;
+      this.speed = Math.random() * 3 + 2;
+      this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confettiPieces.forEach((p, i) => {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, p.size, p.size);
+        p.y += p.speed;
+        if (p.y > canvas.height) {
+          confettiPieces[i] = new ConfettiPiece();
+          p.y = -p.size;
+        }
+      });
+    }
+
+    let confettiInterval;
+    function startConfetti() {
+      confettiPieces.length = 0;
+      for (let i = 0; i < 100; i++) {
+        confettiPieces.push(new ConfettiPiece());
+      }
+      confettiInterval = setInterval(drawConfetti, 20);
+    }
+    function stopConfetti() {
+      clearInterval(confettiInterval);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  </script>
+</body>
+</html>

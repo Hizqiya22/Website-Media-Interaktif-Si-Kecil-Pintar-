@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Materi Keagamaan - Si Kecil Pintar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom right, #fff3e0, #ffe0b2);
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      color: #d84315;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: #ffffffdd;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 15px 0;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+      background: #fff8e1;
+    }
+
+    .card h2 {
+      font-size: 22px;
+      color: #e65100;
+      margin-bottom: 10px;
+    }
+
+    .card ul {
+      text-align: left;
+      margin-left: 25px;
+      font-size: 18px;
+      color: #424242;
+    }
+
+    .btn-back {
+      background: linear-gradient(135deg, #ef6c00, #d84315);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 18px;
+      border-radius: 15px;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .btn-back:hover {
+      background: linear-gradient(135deg, #ff9800, #bf360c);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <header>🌙 Materi Keagamaan</header>
+
+  <div class="card">
+    <h2>🕌 Rukun Islam</h2>
+    <ul>
+      <li>Syahadat</li>
+      <li>Sholat 5 waktu</li>
+      <li>Puasa di bulan Ramadhan</li>
+      <li>Zakat</li>
+      <li>Haji ke Baitullah bagi yang mampu</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>🌟 Rukun Iman</h2>
+    <ul>
+      <li>Iman kepada Allah</li>
+      <li>Iman kepada Malaikat</li>
+      <li>Iman kepada Kitab Allah</li>
+      <li>Iman kepada Rasul</li>
+      <li>Iman kepada Hari Akhir</li>
+      <li>Iman kepada Qada dan Qadar</li>
+    </ul>
+    <!-- 🔹 Wadah video untuk Rukun Iman -->
+    <div id="videoRukunIman"></div>
+  </div>
+
+  <div class="card">
+    <h2>📖 Al-Qur’an</h2>
+    <ul>
+      <li>Al-Qur’an terdiri dari <b>30 Juz</b></li>
+      <li>Memiliki <b>114 Surah</b></li>
+      <li>Terdiri dari sekitar <b>6.236 Ayat</b></li>
+      <li>Diturunkan kepada <b>Nabi Muhammad SAW</b></li>
+      <li>Menjadi pedoman hidup umat Islam</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>👳 Nama-Nama Nabi yang Wajib Diketahui (25 Nabi)</h2>
+    <ul style="columns:2;">
+      <li>Adam AS</li>
+      <li>Idris AS</li>
+      <li>Nuh AS</li>
+      <li>Hud AS</li>
+      <li>Shaleh AS</li>
+      <li>Ibrahim AS</li>
+      <li>Luth AS</li>
+      <li>Ismail AS</li>
+      <li>Ishaq AS</li>
+      <li>Yaqub AS</li>
+      <li>Yusuf AS</li>
+      <li>Ayyub AS</li>
+      <li>Syu’aib AS</li>
+      <li>Musa AS</li>
+      <li>Harun AS</li>
+      <li>Dawud AS</li>
+      <li>Sulaiman AS</li>
+      <li>Ilyas AS</li>
+      <li>Ilyasa AS</li>
+      <li>Yunus AS</li>
+      <li>Zakaria AS</li>
+      <li>Yahya AS</li>
+      <li>Isa AS</li>
+      <li>Muhammad SAW</li>
+    </ul>
+    <!-- 🔹 Wadah video untuk Nama Nabi -->
+    <div id="videoNabi"></div>
+  </div>
+
+  <!-- Script video -->
+  <script>
+    // Fungsi buat render video
+    function renderVideo(list, targetId) {
+      const targetDiv = document.getElementById(targetId);
+      list.forEach(item => {
+        let mediaTag = "";
+        if (item.type === "audio") {
+          mediaTag = `<audio controls class="w-100 mt-2">
+                        <source src="${item.file}" type="audio/mp4">
+                        Browser kamu tidak mendukung pemutar audio.
+                      </audio>`;
+        } else {
+          mediaTag = `<video controls class="w-500 mt-3 rounded" height="400">
+                        <source src="${item.file}" type="video/mp4">
+                        Browser kamu tidak mendukung pemutar video.
+                      </video>`;
+        }
+
+        targetDiv.innerHTML += `
+          <div>
+            <h3>${item.title}</h3>
+            ${mediaTag}
+          </div>`;
+      });
+    }
+
+    // Data Video
+    const rukunImanVideos = [
+      { title: "🎥 Rukun Iman", type: "video", file: "rukuniman.mp4" }
+    ];
+
+    const nabiVideos = [
+      { title: "🎥 Nama Nabi & Rasul", type: "video", file: "namarasul.mp4" }
+    ];
+
+    // Render ke masing-masing card
+    renderVideo(rukunImanVideos, "videoRukunIman");
+    renderVideo(nabiVideos, "videoNabi");
+  </script>
+
+  <button class="btn-back" onclick="window.location.href='materi.html'">⬅ Kembali ke Materi</button>
+</body>
+</html>

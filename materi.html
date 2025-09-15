@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Materi - Si Kecil Pintar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom right, #e3f2fd, #bbdefb);
+      text-align: center;
+    }
+
+    header {
+      padding: 20px;
+      background: #42a5f5;
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .card {
+      background: #ffffffdd;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      transition: transform 0.3s, background 0.3s;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      background: #e1f5fe;
+    }
+
+    .icon {
+      font-size: 50px;
+      margin-bottom: 10px;
+      animation: bounce 1.5s infinite alternate;
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+
+    .btn-back {
+      background: linear-gradient(135deg, #66bb6a, #388e3c);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 18px;
+      border-radius: 15px;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .btn-back:hover {
+      background: linear-gradient(135deg, #81c784, #2e7d32);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <header>📚 Pilih Materi</header>
+
+  <div class="container">
+    <!-- Materi Keagamaan langsung ke materi_keagamaan.html -->
+    <div class="card" onclick="playClick(); window.location.href='materi_keagamaan.html'">
+      <div class="icon">📖</div>
+      <div>Materi Keagamaan</div>
+    </div>
+
+    <div class="card" onclick="playClick(); window.location.href='materi_doa.html'">
+      <div class="icon">🙏</div>
+      <div>Do'a-Do'a Harian</div>
+    </div>
+
+    <div class="card" onclick="playClick(); window.location.href='materi_pengetahuan.html'">
+      <div class="icon">🌍</div>
+      <div>Pengetahuan Umum</div>
+    </div>
+
+    <div class="card" onclick="playClick(); window.location.href='materi_perhitungan.html'">
+      <div class="icon">🔢</div>
+      <div>Perhitungan</div>
+    </div>
+  </div>
+
+  <button class="btn-back" onclick="playClick(); window.location.href='menu.html'">⬅ Kembali ke Menu</button>
+
+  <!-- Suara klik -->
+  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+
+  <script>
+    function playClick() {
+      const sound = document.getElementById("clickSound");
+      sound.currentTime = 0;
+      sound.play();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tracing Huruf & Angka - Si Kecil Pintar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom right, #fff3e0, #ffe0b2);
+      text-align: center;
+    }
+    header {
+      background: #ef6c00;
+      color: white;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .container {
+      padding: 20px;
+    }
+    canvas {
+      border: 3px dashed #ef6c00;
+      border-radius: 15px;
+      margin-top: 20px;
+      background: white;
+      touch-action: none;
+    }
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .controls button {
+      padding: 10px 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: #ff9800;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .controls button:hover {
+      background: #e65100;
+    }
+    .btn-back {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #42a5f5, #1e88e5);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 18px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-back:hover {
+      background: linear-gradient(135deg, #64b5f6, #1565c0);
+    }
+  </style>
+</head>
+<body>
+  <header>✏️ Tracing Huruf & Angka</header>
+  <div class="container">
+    <p>Ikuti titik-titik untuk membentuk huruf atau angka!</p>
+    <canvas id="traceCanvas" width="300" height="300"></canvas>
+    <div class="controls" id="letters"></div>
+  </div>
+
+  <button class="btn-back" onclick="window.location.href='menu.html'">⬅ Kembali ke Menu</button>
+
+  <script>
+    const canvas = document.getElementById("traceCanvas");
+    const ctx = canvas.getContext("2d");
+    let tracingPoints = [];
+    let drawnPoints = [];
+
+    // Pola titik tracing (contoh: A, B, C, 1, 2, 3) lainnya placeholder
+    const patterns = {
+      "A": [[50,250],[150,50],[250,250],[100,150],[200,150]],
+      "B": [[50,50],[50,250],[150,200],[50,150],[150,100],[50,50]],
+      "C": [[200,50],[100,50],[50,100],[50,200],[100,250],[200,250]],
+      "D": [[50,50],[50,250],[200,150],[50,50]], 
+      "E": [[200,50],[50,50],[50,150],[150,150],[50,250],[200,250]],
+      "F": [[50,50],[200,50],[50,150],[150,150],[50,250]],
+      "G": [[200,100],[200,50],[100,50],[50,100],[50,200],[100,250],[200,250],[200,180],[150,180]],
+      "H": [[50,50],[50,250],[50,150],[200,150],[200,50],[200,250]],
+      "I": [[50,50],[200,50],[125,50],[125,250],[50,250],[200,250]],
+      "J": [[200,50],[50,50],[125,50],[125,250],[75,250]],
+      "K": [[50,50],[50,250],[50,150],[200,50],[50,150],[200,250]],
+      "L": [[50,50],[50,250],[200,250]],
+      "M": [[50,250],[50,50],[150,150],[250,50],[250,250]],
+      "N": [[50,250],[50,50],[200,250],[200,50]],
+      "O": [[125,50],[50,125],[50,200],[125,250],[200,200],[200,125],[125,50]],
+      "P": [[50,250],[50,50],[200,50],[200,150],[50,150]],
+      "Q": [[125,50],[50,125],[50,200],[125,250],[200,200],[200,125],[125,50],[180,220]],
+      "R": [[50,250],[50,50],[200,50],[200,150],[50,150],[200,250]],
+      "S": [[200,50],[50,50],[50,150],[200,150],[200,250],[50,250]],
+      "T": [[50,50],[200,50],[125,50],[125,250]],
+      "U": [[50,50],[50,200],[125,250],[200,200],[200,50]],
+      "V": [[50,50],[125,250],[200,50]],
+      "W": [[50,50],[75,250],[150,150],[225,250],[250,50]],
+      "X": [[50,50],[200,250],[125,150],[200,50],[50,250]],
+      "Y": [[50,50],[125,150],[200,50],[125,150],[125,250]],
+      "Z": [[50,50],[200,50],[50,250],[200,250]],
+      "1": [[150,50],[150,250]],
+      "2": [[50,80],[150,50],[250,80],[50,250],[250,250]],
+      "3": [[50,50],[200,50],[200,150],[50,150],[200,150],[200,250],[50,250]],
+      "4": [[200,250],[200,50],[50,150],[200,150]],
+      "5": [[200,50],[50,50],[50,150],[200,150],[200,250],[50,250]],
+      "6": [[200,50],[100,50],[50,100],[50,200],[100,250],[200,200],[200,150],[50,150]],
+      "7": [[50,50],[200,50],[125,250]],
+      "8": [[125,50],[50,125],[125,200],[200,125],[125,50],[125,200],[125,250]],
+      "9": [[200,200],[200,100],[150,50],[100,50],[50,100],[50,150],[100,200],[200,200],[50,250]],
+    };
+
+    // Buat tombol A-Z dan 1-9
+    const lettersDiv = document.getElementById("letters");
+    const allButtons = [];
+    for (let i=65; i<=90; i++) { // A-Z
+      allButtons.push(String.fromCharCode(i));
+    }
+    for (let i=1; i<=9; i++) { // 1-9
+      allButtons.push(String(i));
+    }
+
+    allButtons.forEach(ch => {
+      const btn = document.createElement("button");
+      btn.textContent = ch;
+      btn.onclick = () => loadPattern(ch);
+      lettersDiv.appendChild(btn);
+    });
+
+    function loadPattern(ch) {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      drawnPoints = [];
+      tracingPoints = patterns[ch] || [[150,150]];
+      // gambar titik
+      ctx.fillStyle = "red";
+      tracingPoints.forEach(([x,y])=>{
+        ctx.beginPath();
+        ctx.arc(x,y,6,0,Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // Gambar garis saat disentuh / di klik
+    canvas.addEventListener("pointerdown", e => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      // cari titik terdekat
+      tracingPoints.forEach(([px,py])=>{
+        if (Math.hypot(px-x,py-y)<15) {
+          drawnPoints.push([px,py]);
+          if (drawnPoints.length>1) {
+            const [x1,y1] = drawnPoints[drawnPoints.length-2];
+            const [x2,y2] = drawnPoints[drawnPoints.length-1];
+            ctx.strokeStyle="blue";
+            ctx.lineWidth=3;
+            ctx.beginPath();
+            ctx.moveTo(x1,y1);
+            ctx.lineTo(x2,y2);
+            ctx.stroke();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

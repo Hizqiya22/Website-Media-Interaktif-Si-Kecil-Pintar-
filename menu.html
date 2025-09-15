@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Si Kecil Pintar</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    .bgmenu {
+      background: url('bgawal.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    h1 {
+      font-size: 48px;
+      margin-bottom: 40px;
+      color: #0057b7;
+      text-shadow: 2px 2px 5px #fff;
+    }
+    .menu-buttons {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn {
+      padding: 20px 50px;
+      font-size: 22px;
+      font-weight: bold;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #42a5f5, #1976d2);
+      color: white;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s, background 0.3s;
+    }
+    .btn:hover {
+      background: linear-gradient(135deg, #64b5f6, #1565c0);
+      transform: scale(1.05);
+    }
+    .nav-buttons {
+      margin-top: 40px;
+    }
+    .btn-nav {
+      padding: 12px 30px;
+      border-radius: 15px;
+      font-size: 18px;
+      background: linear-gradient(135deg, #f44336, #d32f2f);
+    }
+    .btn-nav:hover {
+      background: linear-gradient(135deg, #e57373, #c62828);
+    }
+  </style>
+</head>
+<body>
+  <div class="bgmenu">
+    <h1>Menu</h1>
+    <div class="menu-buttons">
+      <a href="profil.html"><button class="btn">Profil Aplikasi</button></a>
+      <a href="materi.html"><button class="btn">Materi</button></a>
+      <a href="tracing.html"><button class="btn">Tracing</button></a>
+      <a href="quiz.html"><button class="btn">Quiz</button></a>
+      <a href="icebreaking.html"><button class="btn">Ice Breaking</button></a>
+    </div>
+    <div class="nav-buttons">
+      <a href="index.html"><button class="btn btn-nav">⬅ Kembali</button></a>
+    </div>
+  </div>
+</body>
+</html>
